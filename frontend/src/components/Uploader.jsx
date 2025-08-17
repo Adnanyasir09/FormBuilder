@@ -22,7 +22,14 @@ export default function Uploader({ value, onChange }){
 
   return (
     <div className="flex items-center gap-3">
-      {value && <img src={`http://localhost:5000${value}`} alt="" className="h-12 rounded border" />}
+      {value && (
+  <img
+    src={`${import.meta.env.VITE_API_URL}${value}`}
+    alt=""
+    className="h-12 rounded border"
+  />
+)}
+
       <label className="px-3 py-2 border rounded cursor-pointer bg-white">
         {loading ? 'Uploading...' : 'Upload Image'}
         <input type="file" className="hidden" accept="image/*" onChange={onFile}/>

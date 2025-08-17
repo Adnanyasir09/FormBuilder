@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { api } from '../api';
 
+
 export default function Fill() {
   const { id } = useParams();
   const [form, setForm] = useState(null);
   const [answers, setAnswers] = useState({});
   const [showSuccess, setShowSuccess] = useState(false);
+
+  const BASE_URL = import.meta.env.VITE_API_URL; // backend base URL
 
   useEffect(() => {
     api.get(`/forms/${id}`).then(r => setForm(r.data));
@@ -30,8 +33,9 @@ export default function Fill() {
     <div className="mx-auto max-w-3xl py-6 px-4 space-y-6 relative">
       {form.headerImageUrl && (
         <img
-          src={`http://localhost:5000${form.headerImageUrl}`}
+          src={`${BASE_URL}${form.headerImageUrl}`}
           className="w-full rounded-xl border mb-4 shadow-md"
+          alt="Form Header"
         />
       )}
       <h1 className="text-3xl font-bold">{form.title}</h1>
@@ -51,7 +55,8 @@ export default function Fill() {
                 {q.imageUrl && (
                   <img
                     className="mt-2 rounded border shadow-sm max-h-40 object-cover"
-                    src={`http://localhost:5000${q.imageUrl}`}
+                    src={`${BASE_URL}${q.imageUrl}`}
+                    alt="Question"
                   />
                 )}
                 <QuestionRenderer q={q} setAnswers={setAnswers} />
@@ -115,6 +120,7 @@ export default function Fill() {
     </div>
   );
 }
+
 
 function QuestionRenderer({ q, setAnswers }) {
   if (q.type === 'categorize') {
